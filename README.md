@@ -7,7 +7,7 @@ A Kanban-style task board plugin for Obsidian that displays your vault's tasks i
 ### File-Based Boards
 Define boards directly in your markdown files using code blocks. No plugin settings needed - just add a `task-board` code block anywhere:
 
-```yaml
+````
 ```task-board
 name: My Project Board
 columns:
@@ -21,7 +21,7 @@ columns:
     match:
       status: ["x"]
 ```
-```
+````
 
 ### Vault-Centric Design
 Your tasks stay in your markdown files. The board is a **dynamic view** - all changes sync back to your actual notes.
@@ -62,7 +62,7 @@ Double-click any task to edit it directly on the board.
 2. Add a code block with the language set to `task-board`
 3. Define your columns:
 
-```yaml
+````
 ```task-board
 name: My Tasks
 columns:
@@ -74,7 +74,7 @@ columns:
   - name: Done
     match: { status: ["x"] }
 ```
-```
+````
 
 Or use a template: Open the command palette and run **Tasks Kanban: Insert task board from template**.
 
@@ -88,7 +88,7 @@ Each card represents a single task. This is the default behavior.
 ### File-Level Boards
 Visualize entire files as cards instead of individual tasks. Perfect for managing projects, content pipelines, or any file-based workflow.
 
-```yaml
+````
 ```task-board
 name: Project Overview
 viewType: files
@@ -108,7 +108,7 @@ columns:
     match:
       completion: { min: 100 }
 ```
-```
+````
 
 Each file card shows:
 - File name
@@ -571,9 +571,7 @@ options:
 ## Installation
 
 ### From Obsidian Community Plugins
-1. Open Settings → Community Plugins
-2. Search for "Tasks Kanban"
-3. Click Install, then Enable
+*Coming soon* - the plugin is pending submission to the community plugins directory.
 
 ### Manual Installation
 1. Download the latest release from GitHub
@@ -628,14 +626,9 @@ Copy `main.js`, `manifest.json`, and `styles.css` to your vault's plugin folder.
 
 ---
 
-## Contributing
+## Feedback
 
-Contributions welcome! Please:
-1. Fork the repository
-2. Create a feature branch
-3. Submit a pull request
-
-See `docs/ROADMAP.md` for development details and planned features.
+Found a bug or have a feature request? [Open an issue](https://github.com/rook-at/tasks-kanban/issues) - feedback is welcome!
 
 ---
 
