@@ -2,67 +2,30 @@
 
 A Kanban-style task board plugin for Obsidian that displays your vault's tasks in a visual board layout.
 
+**Your tasks stay in your markdown files. The board is a dynamic view - all changes sync back to your actual notes.**
+
+---
+
 ## Features
 
-### File-Based Boards
-Define boards directly in your markdown files using code blocks. No plugin settings needed - just add a `task-board` code block anywhere:
-
-````
-```task-board
-name: My Project Board
-columns:
-  - name: To Do
-    match:
-      status: [" "]
-  - name: In Progress
-    match:
-      status: ["/"]
-  - name: Done
-    match:
-      status: ["x"]
-```
-````
-
-### Vault-Centric Design
-Your tasks stay in your markdown files. The board is a **dynamic view** - all changes sync back to your actual notes.
-
-### Mobile Optimized
-Fully functional on phones and tablets:
-- **Touch Drag & Drop**: Long-press to grab a card, then drag to another column
-- **Swipe Navigation**: Swipe left/right to switch between columns on narrow screens
-- **Responsive Layout**: Tab-based single-column view adapts to small screens
-- **Context Menu**: Tap the menu button for Move, Complete, and Send to File actions
-
-### Drag-and-Drop
-Move tasks between columns by dragging. Task status updates automatically in your files.
-
-### Instant Feedback
-All board interactions feel immediate thanks to optimistic UI updates:
-- **Drag-and-drop**: Cards appear in the target column instantly while the file write happens in the background
-- **Task creation**: New cards show up immediately when you press Enter
-- **Checkbox toggle**: Clicking a checkbox instantly moves the card to the matching column (e.g., Done) without waiting for file refresh
-
-Pending changes show a subtle visual indicator (accent border) until confirmed by the file system. If a change can't be confirmed within a few seconds, it reverts automatically.
-
-### Inline Editing
-Double-click any task to edit it directly on the board.
-
-### Rich Metadata Display
-- Due dates (📅), Scheduled dates (⏳), Start dates (🛫)
-- Priority indicators with icons
-- Recurrence badges (🔁)
-- Color-coded tags
-- Subtask progress bars
+- **File-Based Boards** - Define boards in markdown code blocks, no plugin settings needed
+- **Drag-and-Drop** - Move tasks between columns; status updates automatically in your files
+- **Mobile Optimized** - Touch drag-and-drop, swipe navigation, responsive layout
+- **Instant Feedback** - Optimistic UI updates for immediate visual response
+- **Inline Editing** - Double-click any task to edit directly on the board
+- **Rich Metadata** - Due dates, priorities, recurrence, tags, subtask progress
+- **Swimlanes** - Group tasks by priority, due date, tags, or custom criteria
+- **Bulk Operations** - Select multiple cards for batch actions
+- **Webhooks** - Integrate with n8n, Make, Zapier for automation
+- **Keyboard Navigation** - Full keyboard support with ARIA accessibility
 
 ---
 
 ## Quick Start
 
-1. Create a new note or open an existing one
-2. Add a code block with the language set to `task-board`
-3. Define your columns:
+Create a new note and add a `task-board` code block:
 
-````
+````yaml
 ```task-board
 name: My Tasks
 columns:
@@ -80,501 +43,267 @@ Or use a template: Open the command palette and run **Tasks Kanban: Insert task 
 
 ---
 
-## Board Types
+## AI-Assisted Board Creation
 
-### Task-Level Boards (Default)
-Each card represents a single task. This is the default behavior.
+Use your favorite AI assistant (ChatGPT, Claude, etc.) to generate custom boards. Simply describe your workflow and paste the YAML schema reference below.
 
-### File-Level Boards
-Visualize entire files as cards instead of individual tasks. Perfect for managing projects, content pipelines, or any file-based workflow.
+### Example Prompt
 
-````
-```task-board
-name: Project Overview
-viewType: files
+```
+Create a Tasks Kanban board for [describe your workflow here].
+
+Use this YAML schema reference:
+[paste the schema below]
+```
+
+### Complete YAML Schema Reference
+
+```yaml
+# TASKS KANBAN - COMPLETE YAML SCHEMA
+# Copy this entire block when prompting AI assistants
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# TOP-LEVEL FIELDS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+name: string                    # Board display name (required)
+viewType: tasks | files         # "tasks" = individual task cards (default)
+                                # "files" = entire files as cards
+
+taskFile: string                # Default file path for new tasks created on board
+                                # Example: "Inbox.md" or "Projects/Tasks.md"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# FILTER - Which tasks appear on the board
+# ═══════════════════════════════════════════════════════════════════════════════
+
+filter:
+  tags: [string]                # Include only tasks with these tags
+                                # Example: ["#work", "#project"]
+
+  paths: [string]               # Include only tasks from these folder paths
+                                # Example: ["Projects/", "Work/"]
+
+  excludeTags: [string]         # Exclude tasks with these tags
+                                # Example: ["#archived", "#template"]
+
+  excludePaths: [string]        # Exclude tasks from these folder paths
+                                # Example: ["Templates/", "Archive/"]
+
+  priority: [string]            # Include only these priority levels
+                                # Values: highest, high, medium, low, lowest, none
+
+  excludePriority: [string]     # Exclude these priority levels
+
+  due: string                   # Due date preset filter
+                                # Values: today, this-week, next-week, overdue, has-date, no-date
+
+  dueRange:                     # Custom due date range
+    from: "YYYY-MM-DD"
+    to: "YYYY-MM-DD"
+
+  status: [string]              # Include only these checkbox statuses
+                                # Values: " " (todo), "x" (done), "/" (in-progress), "-" (cancelled), "?" (needs-input)
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SOURCE - For file-level boards (viewType: files)
+# ═══════════════════════════════════════════════════════════════════════════════
+
 source:
-  folders: ["Projects/"]
-  exclude: ["Projects/Archive/"]
+  folders: [string]             # Folders to scan for files
+                                # Example: ["Projects/", "Areas/"]
+
+  exclude: [string]             # Folders to exclude
+                                # Example: ["Projects/Archive/"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# COLUMNS - Board columns (required, array)
+# ═══════════════════════════════════════════════════════════════════════════════
+
 columns:
-  - name: Planning
+  - name: string                # Column display name (required)
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # MATCH - Which tasks belong in this column
+    # ─────────────────────────────────────────────────────────────────────────
+
     match:
-      frontmatter: { status: planning }
-  - name: Active
-    match:
-      frontmatter: { status: active }
+      status: [string]          # Checkbox characters to match
+                                # Values: " ", "x", "/", "-", "?"
+                                # Example: [" ", "/"] for todo and in-progress
+
+      tags: [string]            # Tasks must have ALL these tags
+                                # Example: ["#urgent", "#work"]
+
+      excludeTags: [string]     # Exclude tasks with these tags
+
+      priority: [string]        # Match priority levels
+                                # Values: highest, high, medium, low, lowest, none
+
+      due: string               # Due date preset
+                                # Values: today, overdue, this-week, next-week, has-date, no-date
+
+      files: [string]           # Match tasks from these file paths
+                                # Example: ["Projects/Alpha/", "Inbox.md"]
+
+      folder: string            # For file-level boards: files in this folder
+                                # Example: "Projects/Active/"
+
+      frontmatter:              # Match YAML frontmatter fields (file-level boards)
+        key: value              # Example: { status: active, type: project }
+
+      completion:               # For file-level boards: task completion percentage
+        min: number             # Minimum completion % (0-100)
+        max: number             # Maximum completion % (0-100)
+
+      catchAll: boolean         # true = match all remaining unmatched tasks
+                                # Place this column last as a fallback
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # ONDROP - Actions when a card is dropped into this column
+    # ─────────────────────────────────────────────────────────────────────────
+
     onDrop:
-      setFrontmatter: { status: active }
-  - name: Completed
-    match:
-      completion: { min: 100 }
-```
-````
+      setStatus: string         # Change checkbox status
+                                # Values: " ", "x", "/", "-", "?"
 
-Each file card shows:
-- File name
-- Task completion progress (e.g., "5/12 tasks")
-- Earliest due date across all tasks
-- Highest priority
+      addTags: [string]         # Add these tags to the task
+                                # Example: ["#wip", "#review"]
 
----
+      removeTags: [string]      # Remove these tags from the task
+                                # Example: ["#inbox", "#todo"]
 
-## Templates
+      swapTags:                 # Replace one tag with another
+        from: string            # Tag to remove (e.g., "#draft")
+        to: string              # Tag to add (e.g., "#published")
 
-### One-Click Board Templates
-Create boards from 8 built-in productivity frameworks:
+      moveToFile: string        # Move task to a different file
+                                # Example: "Archive/Completed.md"
 
-**Command:** `Tasks Kanban: Insert task board from template`
+      setFrontmatter:           # Update frontmatter (file-level boards)
+        key: value              # Example: { status: active, reviewed: true }
 
-| Template | Category | Description |
-|----------|----------|-------------|
-| Simple Kanban | Workflow | Basic To Do → Doing → Done |
-| GTD | Workflow | Inbox, Next Actions, Waiting, Someday |
-| Eisenhower Matrix | Prioritization | Urgent × Important quadrants |
-| PARA | Lifecycle | Projects, Areas, Resources, Archives |
-| MoSCoW | Prioritization | Must, Should, Could, Won't |
-| OKR Tracker | Agile | Objectives by confidence level |
-| Sprint Board | Agile | Backlog → Sprint → Done |
-| Content Pipeline | Workflow | Ideas → Drafts → Review → Published |
+      moveToFolder: string      # Move file to folder (file-level boards)
+                                # Example: "Archive/"
 
-### Per-Column Templates
-Define default text appended to new tasks in specific columns:
+    # ─────────────────────────────────────────────────────────────────────────
+    # COLUMN OPTIONS
+    # ─────────────────────────────────────────────────────────────────────────
 
-```yaml
-columns:
-  - name: Today
-    match: { status: [" "] }
-    template: "#today {{today}}"
-```
+    limit: number               # WIP limit - max cards allowed in column
+                                # Cards over limit are visually indicated
 
-**Available variables:**
-| Variable | Output |
-|----------|--------|
-| `{{today}}` | Today's date (YYYY-MM-DD) |
-| `{{tomorrow}}` | Tomorrow's date |
-| `{{nextWeek}}` | Date 7 days from now |
-| `{{column}}` | Column name |
-| `{{file}}` | Board file name (without .md) |
+    sort: string                # Sort order for this column
+                                # Values: priority, dueDate, createdDate, alphabetical, manual
 
----
+    sortDirection: asc | desc   # Sort direction
 
-## Filtering
+    template: string            # Text appended to new tasks in this column
+                                # Variables: {{today}}, {{tomorrow}}, {{nextWeek}}, {{column}}, {{file}}
+                                # Example: "#today 📅 {{today}}"
 
-### Board-Level Filters
-Filter which tasks appear on the board:
+    # ─────────────────────────────────────────────────────────────────────────
+    # SWIMLANES - Group tasks within a column
+    # ─────────────────────────────────────────────────────────────────────────
 
-```yaml
-filter:
-  tags: ["#project"]
-  paths: ["Work/"]
-  excludeTags: ["#archived"]
-  excludePaths: ["Templates/"]
-```
-
-### Advanced Filters
-Interactive filter bar above your board for dynamic filtering:
-
-**Priority Filters:**
-```yaml
-filter:
-  priority: [high, medium]
-  excludePriority: [low, none]
-```
-
-**Due Date Filters:**
-- Presets: `today`, `this-week`, `next-week`, `overdue`, `has-date`, `no-date`
-- Custom ranges: `dueRange: { from: "2024-01-01", to: "2024-12-31" }`
-
-**Status Filters:**
-```yaml
-filter:
-  status: [" ", "/"]  # Only incomplete and in-progress
-```
-
-All filters persist to your board's YAML configuration automatically.
-
----
-
-## Swimlanes
-
-Group tasks within columns by priority, due date, tags, or custom criteria:
-
-```yaml
-columns:
-  - name: To Do
-    match: { status: [" "] }
     swimlanes:
-      groupBy: priority  # Auto-generates priority lanes
-  - name: In Progress
-    match: { status: ["/"] }
-    swimlanes:
-      groupBy: tags
-      groupTags: ["#frontend", "#backend", "#docs"]
-```
+      groupBy: string           # Auto-generate lanes by grouping
+                                # Values: priority, dueDate, tags
 
-**Built-in groupBy presets:**
-| Preset | Lanes Generated |
-|--------|-----------------|
-| `priority` | Highest, High, Medium, Low, No Priority |
-| `dueDate` | Overdue, Today, This Week, Next Week, Later, No Date |
-| `tags` | One lane per tag in `groupTags` array |
+      groupTags: [string]       # For groupBy: tags - which tags to create lanes for
+                                # Example: ["#frontend", "#backend", "#design"]
 
-**Custom lanes:**
-```yaml
-swimlanes:
-  lanes:
-    - name: High Priority
-      match: { priority: [highest, high] }
-    - name: Normal
-      match: { priority: [medium, low, lowest] }
-    - name: Other
-      catchAll: true
-```
+      onDrop: string            # Behavior when dragging between swimlanes
+                                # Values: update (default), prompt, none
 
-**Drag-drop between lanes:**
-Moving tasks between swimlanes automatically updates their metadata:
-- Priority lanes → updates task priority
-- Tag lanes → removes old tag, adds new tag
-- Supports hierarchical tags (`#project/client` satisfies `#project` lane)
+      lanes:                    # Custom lane definitions (instead of groupBy)
+        - name: string          # Lane display name
+          match:                # Same match rules as columns
+            priority: [string]
+            tags: [string]
+            due: string
+            # ... any match rule
+          catchAll: boolean     # true = catch remaining tasks
 
-Control the behavior with `onDrop`:
-```yaml
-swimlanes:
-  onDrop: update   # (default) Automatically update metadata
-  # onDrop: prompt # Ask for confirmation before changes
-  # onDrop: none   # Disable lane-to-lane drops
-```
+# ═══════════════════════════════════════════════════════════════════════════════
+# OPTIONS - Board-wide settings
+# ═══════════════════════════════════════════════════════════════════════════════
 
----
-
-## Column Rules & Actions
-
-### Match Rules
-Columns match tasks by:
-| Rule | Description | Example |
-|------|-------------|---------|
-| `status` | Checkbox character | `[" ", "/"]` |
-| `tags` | Tasks with specific tags | `["#work", "#urgent"]` |
-| `excludeTags` | Exclude tasks with tags | `["#archived"]` |
-| `priority` | Task priority level | `["high", "highest"]` |
-| `due` | Due date preset | `"today"`, `"overdue"`, `"this-week"` |
-| `files` | File path prefixes | `["Projects/", "Work/"]` |
-| `folder` | Files in folder (file-level) | `"Projects/Active/"` |
-| `frontmatter` | YAML frontmatter fields | `{ status: active }` |
-| `completion` | Task completion % (file-level) | `{ min: 100 }` |
-| `catchAll` | Match remaining tasks | `true` |
-| `limit` | WIP limit (max cards) | `3` |
-
-### OnDrop Actions
-Define what happens when a card is dropped into a column:
-
-```yaml
-columns:
-  - name: In Progress
-    match: { status: ["/"] }
-    onDrop:
-      setStatus: "/"
-      addTags: ["#wip"]
-
-  - name: Done
-    match: { status: ["x"] }
-    onDrop:
-      setStatus: "x"
-      removeTags: ["#wip", "#urgent"]
-
-  - name: Archive
-    match: { folder: "Archive/" }
-    onDrop:
-      moveToFolder: "Archive/"
-
-  - name: Backend Team
-    match: { tags: ["#backend"] }
-    onDrop:
-      swapTags: { from: "#frontend", to: "#backend" }
-```
-
-**Available mutations:**
-| Mutation | Description |
-|----------|-------------|
-| `setStatus` | Change checkbox status |
-| `addTags` | Add tags to task |
-| `removeTags` | Remove tags from task |
-| `swapTags` | Replace one tag with another |
-| `moveToFile` | Move task to a different file |
-| `setFrontmatter` | Update frontmatter fields (file-level) |
-| `moveToFolder` | Move file to folder (file-level) |
-
-**Smart defaults:** If `onDrop` is omitted, it's inferred from `match`. Status-matched columns update status, tag-matched columns swap tags, etc.
-
----
-
-## Archive
-
-Automatically manage completed tasks:
-
-```yaml
 options:
-  archiveEnabled: true
-  archiveDaysDelay: 7        # Archive tasks completed >7 days ago
-  autoArchiveColumn: "Done"  # Archive when dropped in this column
-  archiveTag: "archived"     # Tag added to archived tasks
-  archiveHideTasks: true     # Hide archived tasks from board
-  addCompletionDate: true    # Add ✅ YYYY-MM-DD when completing
-```
+  showSubtasks: boolean         # Show subtask progress on cards (default: true)
+  showSubtasksAsCards: boolean  # Show subtasks as separate cards (default: true)
+  showCompleted: boolean        # Show completed tasks (default: true)
+  showEmptyColumns: boolean     # Show columns with no tasks (default: true)
+  cardPreview: boolean          # Show content preview below task title (default: false)
+  fullWidth: boolean            # Distribute columns evenly (default: false)
+  readOnly: boolean             # Disable editing/dragging (default: false)
+  clickableCheckboxes: boolean  # Allow completing via checkbox click (default: true)
+  inheritFrontmatterTags: boolean # Apply file's frontmatter tags (default: false)
+  addCompletionDate: boolean    # Add completion date when marking done (default: false)
 
-**Manual archiving:** Create an Archive column that matches the archive tag:
-```yaml
-columns:
-  - name: Archive
-    match: { tags: ["#archived"] }
-```
+  # Sorting
+  sort: string                  # Default sort for all columns
+                                # Values: priority, dueDate, createdDate, alphabetical, manual
+  sortDirection: asc | desc
 
-Dragging tasks out of the Archive column removes the archive tag.
+  # Archive settings
+  archiveEnabled: boolean       # Enable auto-archiving (default: false)
+  archiveDaysDelay: number      # Days after completion before archive (default: 30)
+  archiveTag: string            # Tag added to archived tasks (default: "archived")
+  autoArchiveColumn: string     # Column name that triggers archive on drop
+  archiveHideTasks: boolean     # Hide archived tasks from board (default: false)
 
----
-
-## Keyboard Navigation
-
-Navigate and manage your board without a mouse:
-
-| Key | Action |
-|-----|--------|
-| `↑` / `↓` | Navigate between cards in column |
-| `←` / `→` | Navigate between columns |
-| `Home` / `End` | Jump to first/last card in column |
-| `Ctrl+Home` / `Ctrl+End` | Jump to first/last card on board |
-| `Enter` | Edit selected card |
-| `Delete` / `Backspace` | Cancel task (soft delete) |
-| `Ctrl+Delete` | Permanently delete task |
-| `Escape` | Deselect card / Clear selection |
-| `n` | Quick-add new task in current column |
-| `Ctrl+A` | Select all cards in column |
-
-The board uses ARIA attributes for screen reader accessibility.
-
----
-
-## Bulk Operations
-
-Select multiple cards and perform actions in bulk:
-
-**Selection:**
-| Action | Shortcut |
-|--------|----------|
-| Toggle selection | `Ctrl+Click` |
-| Range select | `Shift+Click` |
-| Select all in column | `Ctrl+A` |
-| Clear selection | `Escape` |
-
-**Bulk Actions** (floating bar appears when 2+ cards selected):
-- **Move to...** - Move selected cards to another column
-- **Status...** - Change status (To Do, In Progress, Done, Cancelled)
-- **Send to file...** - Dispatch all selected tasks to another file
-- **Cancel** - Soft delete (mark as cancelled)
-- **Delete** - Permanently remove from files
-
----
-
-## Webhooks
-
-Integrate your board with external automation tools (n8n, Make, Zapier):
-
-```yaml
-webhooks:
-  - url: "https://your-n8n.com/webhook/abc123"
-    events: ["task.moved", "task.created"]
-    secret: "my-webhook-secret"  # References plugin settings
-```
-
-**Events:**
-| Event | Trigger |
-|-------|---------|
-| `task.created` | New task added via the board |
-| `task.moved` | Card dragged to new column |
-
-**Payload includes:** task text, status, tags, source file, line number, column names, and mutations applied.
-
-Configure secrets in Plugin Settings to keep API keys out of your vault files.
-
----
-
-## Context Menu & Quick Actions
-
-### Context Menu
-Right-click any task card for quick actions:
-- **Edit** - Edit the task text inline
-- **Send to file...** - Move task (with subtasks) to another file
-- **Cancel task** - Mark as cancelled (soft delete)
-- **Delete permanently** - Remove from file completely
-
-### Send to File
-Dispatch tasks from an inbox to the appropriate project file:
-1. Right-click a task card
-2. Select "Send to file..."
-3. Choose from smart suggestions or search any file
-
-**Smart suggestions prioritize:**
-- Recently used destinations
-- Files matching task's tags
-- Files linked in the task text
-- Files in the same folder
-
-The task and all its subtasks move to the end of the destination file.
-
-### Quick Add
-Click the `+` button on any column header to add a new task. Tasks are created in your configured task file with appropriate status and tags for that column.
-
-### GUI Settings Modal
-Click the gear icon on any board to:
-- Rename the board
-- Add, remove, and reorder columns
-- Configure column match rules (status, tags)
-- Set WIP limits per column
-- Configure filters with autocomplete
-
----
-
-## Board Options
-
-| Option | Default | Description |
-|--------|---------|-------------|
-| `viewType` | `tasks` | `tasks` for individual cards, `files` for file aggregation |
-| `taskFile` | - | Default file for new tasks |
-| `showSubtasks` | `true` | Display subtask progress on cards |
-| `showSubtasksAsCards` | `true` | Show subtasks as separate cards on the board |
-| `showCompleted` | `true` | Show tasks with `[x]` status |
-| `showEmptyColumns` | `true` | Display columns with no tasks |
-| `cardPreview` | `false` | Show content preview below task title |
-| `fullWidth` | `false` | Distribute columns evenly across board width |
-| `readOnly` | `false` | Disable all editing and dragging (dashboard mode) |
-| `clickableCheckboxes` | `true` | Allow completing tasks by clicking checkbox |
-| `inheritFrontmatterTags` | `false` | Apply file's frontmatter tags to its tasks |
-| `addCompletionDate` | `false` | Add ✅ YYYY-MM-DD when completing tasks |
-| `archiveEnabled` | `false` | Enable auto-archiving of old completed tasks |
-| `archiveDaysDelay` | `30` | Days after completion before auto-archive |
-| `archiveTag` | `archived` | Tag added to archived tasks |
-| `autoArchiveColumn` | - | Column name that triggers archive on drop |
-| `archiveHideTasks` | `false` | Hide archived tasks from all columns |
-| `sort` | - | Sort by: `priority`, `dueDate`, `createdDate`, `alphabetical`, `manual` |
-| `sortDirection` | `asc` | Sort direction: `asc` or `desc` |
-| `colors` | - | Card color configuration (see Card Colors) |
-
-### Card Sorting
-Sort tasks within columns:
-
-```yaml
-options:
-  sort: priority
-  sortDirection: asc
-```
-
-**Per-column override:**
-```yaml
-columns:
-  - name: To Do
-    match: { status: [" "] }
-    sort: dueDate
-    sortDirection: desc
-```
-
-### Card Colors
-Add color stripes to cards based on priority or tags:
-
-**Color by priority:**
-```yaml
-options:
+  # Card colors
   colors:
-    by: priority
-    priorityColors:
+    by: priority | tags         # Color cards by priority or tags
+
+    priorityColors:             # Custom priority colors (hex codes)
       highest: "#dc2626"
       high: "#ea580c"
       medium: "#ca8a04"
-```
+      low: "#65a30d"
+      lowest: "#0891b2"
 
-**Color by tags:**
-```yaml
-options:
-  colors:
-    by: tags
-    tagColors:
+    tagColors:                  # Custom tag colors (hex codes)
       "#frontend": "#3b82f6"
       "#backend": "#10b981"
       "#urgent": "#ef4444"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# WEBHOOKS - External integrations
+# ═══════════════════════════════════════════════════════════════════════════════
+
+webhooks:
+  - url: string                 # Webhook endpoint URL (required)
+                                # Example: "https://your-n8n.com/webhook/abc123"
+
+    events: [string]            # Events that trigger the webhook
+                                # Values: task.created, task.moved
+
+    secret: string              # Name of secret in plugin settings
+                                # Keeps API keys out of vault files
+
+    headers:                    # Custom HTTP headers
+      key: value                # Example: { "X-Custom-Header": "value" }
 ```
 
----
+### Example Prompts
 
-## Status Characters
+**Software Development:**
+> Create a Tasks Kanban board for software development with columns for Backlog, Ready, In Development (limit 3), Code Review, QA Testing, and Done. Group the In Development column by priority swimlanes.
 
-| Status | Meaning | Example |
-|--------|---------|---------|
-| `" "` | Todo (unchecked) | `- [ ] Task` |
-| `"x"` | Done (checked) | `- [x] Task` |
-| `"/"` | In Progress | `- [/] Task` |
-| `"-"` | Cancelled | `- [-] Task` |
-| `"?"` | Needs Input | `- [?] Task` |
+**Content Creation:**
+> Create a Tasks Kanban board for my blog content pipeline with columns for Ideas, Research, Writing, Editing, and Published. Color cards by tags for #tutorial, #opinion, and #review.
 
----
-
-## Supported Task Formats
-
-### Tasks Plugin (emoji format)
-```markdown
-- [ ] Buy groceries 📅 2024-12-01
-- [ ] Call mom ⏳ 2024-11-30
-- [x] Finish report ✅ 2024-11-29
-```
-
-### Dataview (inline fields)
-```markdown
-- [ ] Buy groceries [due:: 2024-12-01]
-- [ ] Call mom [scheduled:: 2024-11-30]
-```
-
-### Supported Metadata
-| Field | Tasks Plugin | Dataview |
-|-------|--------------|----------|
-| Due Date | 📅 YYYY-MM-DD | [due:: YYYY-MM-DD] |
-| Scheduled | ⏳ YYYY-MM-DD | [scheduled:: YYYY-MM-DD] |
-| Start Date | 🛫 YYYY-MM-DD | - |
-| Created | ➕ YYYY-MM-DD | - |
-| Done | ✅ YYYY-MM-DD | - |
-| Priority | ⏫🔼🔸🔽⏬ | - |
-| Tags | #tag | #tag |
-| Recurrence | 🔁 pattern | - |
-
-*Note: Start date, priority, and recurrence are only parsed from Tasks plugin emoji format, not Dataview inline fields.*
-
----
-
-## Commands
-
-| Command | Description |
-|---------|-------------|
-| `Tasks Kanban: Insert task board from template` | Insert a board using a productivity template |
-| `Tasks Kanban: Insert task board` | Insert a blank board code block |
-| `Tasks Kanban: Create task board file` | Create a new file with a board |
-| `Tasks Kanban: Refresh Task Index` | Force rebuild the task index from all vault files |
-
----
-
-## Plugin Settings
-
-| Setting | Description |
-|---------|-------------|
-| Default inbox file | File to add new tasks to when a board doesn't specify `taskFile` |
-| Auto-refresh | Update boards when files change |
-| Refresh interval | Debounce time for file change events (ms) |
-| Webhook secrets | Named secrets for webhook authentication |
+**GTD Workflow:**
+> Create a GTD-style Tasks Kanban board with Inbox, Next Actions, Waiting For, and Someday/Maybe columns. Filter to only show tasks from my Projects folder.
 
 ---
 
 ## Installation
 
-### From Obsidian Community Plugins
-*Coming soon* - the plugin is pending submission to the community plugins directory.
-
 ### Manual Installation
-1. Download the latest release from GitHub
+1. Download the latest release from [GitHub](https://github.com/rook-at/tasks-kanban/releases)
 2. Extract to `.obsidian/plugins/tasks-kanban/`
 3. Enable the plugin in Settings → Community Plugins
 
@@ -587,42 +316,16 @@ npm run build
 ```
 Copy `main.js`, `manifest.json`, and `styles.css` to your vault's plugin folder.
 
+### From Obsidian Community Plugins
+*Coming soon* - the plugin is pending submission to the community plugins directory.
+
 ---
 
-## Architecture
+## Documentation
 
-```
-┌─────────────────────────────────────────────────────┐
-│                    Obsidian                          │
-│  ┌─────────────────────────────────────────────┐    │
-│  │             Tasks Kanban Plugin               │    │
-│  │  ┌───────────┐  ┌───────────┐               │    │
-│  │  │ TaskIndex │  │FileWatcher│               │    │
-│  │  └─────┬─────┘  └─────┬─────┘               │    │
-│  │        │              │                      │    │
-│  │  ┌─────▼──────────────▼─────┐               │    │
-│  │  │    Code Block Processor   │               │    │
-│  │  │  ┌─────────────────────┐ │               │    │
-│  │  │  │  FileBasedBoard.tsx │ │               │    │
-│  │  │  │  ┌────┐ ┌────┐ ┌───┐│ │               │    │
-│  │  │  │  │Col │ │Col │ │Col││ │               │    │
-│  │  │  │  └────┘ └────┘ └───┘│ │               │    │
-│  │  │  └─────────────────────┘ │               │    │
-│  │  └──────────────────────────┘               │    │
-│  └─────────────────────────────────────────────┘    │
-│                         │                            │
-│                         ▼                            │
-│              vault.process() ──► Markdown Files      │
-└─────────────────────────────────────────────────────┘
-```
+For complete documentation including all features, options, and advanced configurations:
 
-**Key Design Decisions:**
-- **File-based boards**: Boards defined in markdown, not plugin settings
-- **Preact** for lightweight, fast UI
-- **TaskIndex**: Central cache with per-file parsing and real-time updates
-- **vault.process()** for atomic file operations
-- **Content-based matching** to find task lines reliably
-- **Optimistic UI** for instant visual feedback
+**[View Full Documentation](docs/DOCUMENTATION.md)**
 
 ---
 
@@ -635,12 +338,3 @@ Found a bug or have a feature request? [Open an issue](https://github.com/rook-a
 ## License
 
 AGPL-3.0 - see [LICENSE](LICENSE) file
-
----
-
-## Acknowledgments
-
-Inspired by:
-- [CardBoard](https://github.com/roovo/obsidian-card-board) plugin
-- [Tasks](https://github.com/obsidian-tasks-group/obsidian-tasks) plugin
-- [Dataview](https://github.com/blacksmithgu/obsidian-dataview) plugin
