@@ -45,22 +45,21 @@ Or use a template: Open the command palette and run **Tasks Kanban: Insert task 
 
 ## AI-Assisted Board Creation
 
-Use your favorite AI assistant (ChatGPT, Claude, etc.) to generate custom boards. Simply describe your workflow and paste the YAML schema reference below.
+Use your favorite AI assistant (ChatGPT, Claude, etc.) to generate custom boards. Copy the prompt template below, fill in your requirements, and paste the whole thing into your AI chat.
 
-### Example Prompt
+### Prompt Template
 
-```
-Create a Tasks Kanban board for [describe your workflow here].
+````
+I want a Tasks Kanban board for [DESCRIBE YOUR WORKFLOW HERE].
 
-Use this YAML schema reference:
-[paste the schema below]
-```
+Example: "a 4-column software dev board with Backlog, To Do, In Progress (limit 3),
+and Done. Group In Progress by priority swimlanes. Color cards by tags #frontend,
+#backend, #devops."
 
-### Complete YAML Schema Reference
+Please generate a valid task-board YAML code block using this schema reference:
 
 ```yaml
-# TASKS KANBAN - COMPLETE YAML SCHEMA
-# Copy this entire block when prompting AI assistants
+# TASKS KANBAN - YAML SCHEMA REFERENCE
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # TOP-LEVEL FIELDS
@@ -286,17 +285,16 @@ webhooks:
     headers:                    # Custom HTTP headers
       key: value                # Example: { "X-Custom-Header": "value" }
 ```
+````
 
-### Example Prompts
+### Example Requests
 
-**Software Development:**
-> Create a Tasks Kanban board for software development with columns for Backlog, Ready, In Development (limit 3), Code Review, QA Testing, and Done. Group the In Development column by priority swimlanes.
+Here are some example descriptions you can put in the `[DESCRIBE YOUR WORKFLOW HERE]` section:
 
-**Content Creation:**
-> Create a Tasks Kanban board for my blog content pipeline with columns for Ideas, Research, Writing, Editing, and Published. Color cards by tags for #tutorial, #opinion, and #review.
-
-**GTD Workflow:**
-> Create a GTD-style Tasks Kanban board with Inbox, Next Actions, Waiting For, and Someday/Maybe columns. Filter to only show tasks from my Projects folder.
+- "a 4-column board with Backlog, To Do, In Progress (limit 3), and Done"
+- "a GTD board with Inbox, Next Actions, Waiting For, and Someday/Maybe - filter to only show tasks from my Projects folder"
+- "a content pipeline with Ideas, Research, Writing, Editing, Published - color cards by tags #tutorial, #opinion, #review"
+- "a sprint board with swimlanes grouping tasks by priority in the In Progress column"
 
 ---
 
