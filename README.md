@@ -355,3 +355,12 @@ Found a bug or have a feature request? [Open an issue](https://github.com/rook-a
 ## License
 
 AGPL-3.0 - see [LICENSE](LICENSE) file
+
+---
+
+## Acknowledgments
+
+Inspired by:
+- [CardBoard](https://github.com/roovo/obsidian-card-board) plugin
+- [Tasks](https://github.com/obsidian-tasks-group/obsidian-tasks) plugin
+- [Dataview](https://github.com/blacksmithgu/obsidian-dataview) plugin
