@@ -43,6 +43,25 @@ Or use a template: Open the command palette and run **Tasks Kanban: Insert task 
 
 ---
 
+## Built-in Templates
+
+Get started quickly with 8 productivity frameworks. Run the command palette (`Ctrl/Cmd+P`) and select **Tasks Kanban: Insert task board from template**.
+
+| Template | Description |
+|----------|-------------|
+| **Simple Kanban** | Classic To Do → Doing → Done workflow |
+| **GTD** | Getting Things Done: Inbox, Next Actions, Waiting For, Someday |
+| **Eisenhower Matrix** | Urgent × Important priority quadrants |
+| **PARA** | Projects, Areas, Resources, Archives (file-level) |
+| **MoSCoW** | Must, Should, Could, Won't prioritization |
+| **OKR Tracker** | Track objectives by confidence level |
+| **Sprint Board** | Backlog → Sprint → In Progress → Review → Done |
+| **Content Pipeline** | Ideas → Drafting → Editing → Published (file-level) |
+
+Each template is customizable - set your source folder, WIP limits, and board name before inserting.
+
+---
+
 ## AI-Assisted Board Creation
 
 Use your favorite AI assistant (ChatGPT, Claude, etc.) to generate custom boards. Copy the prompt template below, fill in your requirements, and paste the whole thing into your AI chat.
