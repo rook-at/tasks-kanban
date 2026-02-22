@@ -35,7 +35,7 @@ Each card represents a single task. This is the default behavior.
 Visualize entire files as cards instead of individual tasks. Perfect for managing projects, content pipelines, or any file-based workflow.
 
 ````yaml
-```task-board
+```tasks-kanban
 name: Project Overview
 viewType: files
 source:

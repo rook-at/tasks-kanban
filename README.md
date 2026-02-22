@@ -23,10 +23,10 @@ A Kanban-style task board plugin for Obsidian that displays your vault's tasks i
 
 ## Quick Start
 
-Create a new note and add a `task-board` code block:
+Create a new note and add a `tasks-kanban` code block:
 
 ````yaml
-```task-board
+```tasks-kanban
 name: My Tasks
 columns:
   - name: To Do
@@ -75,7 +75,7 @@ Example: "a 4-column software dev board with Backlog, To Do, In Progress (limit 
 and Done. Group In Progress by priority swimlanes. Color cards by tags #frontend,
 #backend, #devops."
 
-Please generate a valid task-board YAML code block using this schema reference:
+Please generate a valid tasks-kanban YAML code block using this schema reference:
 
 ```yaml
 # TASKS KANBAN - YAML SCHEMA REFERENCE
