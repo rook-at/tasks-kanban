@@ -1,5 +1,21 @@
 /* Tasks Kanban Plugin Styles */
 
+/* ============================================================================
+   Full Width Breakout (default behavior)
+   Breaks out of Obsidian's "Readable line length" constraint
+   ============================================================================ */
+.markdown-preview-view:has(.tasks-kanban),
+.markdown-source-view:has(.tasks-kanban) {
+  max-width: none !important;
+  width: 100%;
+}
+
+/* When user opts into respecting readable line length, don't break out */
+.markdown-preview-view:has(.tasks-kanban.respect-line-length),
+.markdown-source-view:has(.tasks-kanban.respect-line-length) {
+  max-width: var(--file-line-width);
+}
+
 /* Container */
 .tasks-kanban-container {
   height: 100%;
