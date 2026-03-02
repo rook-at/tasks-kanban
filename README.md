@@ -4,6 +4,8 @@ A Kanban-style task board plugin for Obsidian that displays your vault's tasks i
 
 **Your tasks stay in your markdown files. The board is a dynamic view - all changes sync back to your actual notes.**
 
+<video src="docs/tasks-kanban-demovideo.mp4" controls width="100%"></video>
+
 ---
 
 ## Features
