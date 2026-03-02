@@ -1,7 +1,7 @@
 {
 	"id": "tasks-kanban",
 	"name": "Tasks Kanban",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"minAppVersion": "1.0.0",
 	"description": "A vault-centric kanban board that dynamically displays tasks from across your vault",
 	"author": "Simon Grabher",
